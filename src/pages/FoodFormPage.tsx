@@ -2,13 +2,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { getCategories } from "../services/fakeCategoryService";
-import { saveFood } from "../services/fakeFoodService";
+import { Food, getFood, saveFood } from "../services/fakeFoodService";
 import { FormData, schema } from "./schemas/FoodFormSchema";
+import { useEffect } from "react";
 
 function FoodFormPage() {
   const categories = getCategories();
   const navigate = useNavigate();
   const {
+    reset,
     register,
     handleSubmit,
     formState: { errors },
@@ -20,12 +22,30 @@ function FoodFormPage() {
     navigate("/");
   }
 
+  useEffect(() => {
+    if (!id || id === "new") return;
+    const food = getFood(id);
+
+    if (!food) return;
+    reset(mapToFormData(food));
+  }, []);
+
+  function mapToFormData(food: Food) {
+    return {
+      _id: food._id,
+      name: food.name,
+      categoryId: food.category._id,
+      price: food.price,
+      numberInStock: food.numberInStock,
+    };
+  }
+
   const { id } = useParams();
 
   return (
     <>
-      <div className="vh-100 d-grid justify-content-center align-content-center">
-        <h1 className="text-center mb-3">FoodForm {id} </h1>
+      <div className="vh-100 d-flex flex-column justify-content-center align-items-center">
+        <h1 className="text-center mb-5">FoodForm {id} </h1>
         <div className="p-3 shadow rounded-3" style={{ width: 400 }}>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-2">

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Food } from "../services/fakeFoodService";
 import { Favorite, TableBody, TableHeader } from "./types";
 import { Columns } from "./utils";
@@ -11,6 +12,11 @@ interface Props {
 function Table({ foods, onDelete, onFavor }: Props) {
   const columns: Columns[] = [
     {
+      content: (food) => (
+        <Link style={{ color: "black" }} to={`/foods/${food._id}`}>
+          {food.name}{" "}
+        </Link>
+      ),
       path: "name",
       label: "Name",
     },

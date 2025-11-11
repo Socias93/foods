@@ -1,6 +1,7 @@
 import z from "zod";
 
 export const schema = z.object({
+  _id: z.string().optional(),
   name: z.string().min(1, { message: "Name is required" }),
   categoryId: z
     .string({ error: "You must choose a valid category" })

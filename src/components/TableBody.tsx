@@ -13,10 +13,10 @@ function TableBody({ foods, columns }: Props) {
       {foods.map((food) => (
         <tr key={food._id}>
           {columns.map((column) =>
-            "path" in column ? (
-              <td key={column.path}> {_.get(food, column.path)} </td>
+            "content" in column ? (
+              <td key={`${food._id}-${column.key}`}>{column.content(food)}</td>
             ) : (
-              <td key={column.key}> {column.content(food)} </td>
+              <td key={column.path}> {_.get(food, column.path)} </td>
             )
           )}
         </tr>
