@@ -1,11 +1,18 @@
-function TableHeader() {
+import { Columns } from "./Table";
+
+interface Props {
+  columns: Columns[];
+}
+
+function TableHeader({ columns }: Props) {
   return (
     <thead>
       <tr>
-        <th scope="col">Name</th>
-        <th scope="col">Category</th>
-        <th scope="col">Price</th>
-        <th scope="col">Stock</th>
+        {columns.map((column) => (
+          <th key={column.path} scope="col">
+            {column.label}
+          </th>
+        ))}
       </tr>
     </thead>
   );

@@ -1,26 +1,9 @@
-import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { getCategories } from "../services/fakeCategoryService";
 import { saveFood } from "../services/fakeFoodService";
-
-const schema = z.object({
-  name: z.string().min(1, { message: "Name is required" }),
-  categoryId: z
-    .string({ error: "You must choose a valid category" })
-    .min(1, { message: "You must choose a category" }),
-  price: z
-    .number({ error: "You must write a number" })
-    .min(1, { message: "Price cant be less than 1" })
-    .max(20, { message: "Price cant be more than 20" }),
-  numberInStock: z
-    .number({ error: "You must write a number" })
-    .min(1, { message: "Stock cant be less than 1" })
-    .max(20, { message: "Stock cant be more than 100" }),
-});
-
-type FormData = z.infer<typeof schema>;
+import { FormData, schema } from "./schemas/FoodFormSchema";
 
 function FoodFormPage() {
   const categories = getCategories();
