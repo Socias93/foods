@@ -1,14 +1,15 @@
-import { useState } from "react";
+interface Props {
+  isFavored: boolean;
+  onFavored(): void;
+}
 
-function Favorite() {
-  const [isFavored, setFavored] = useState(false);
-
+function Favorite({ isFavored, onFavored }: Props) {
   let classes = "clickable fa-star fa-";
   classes += isFavored ? "solid" : "regular";
 
   return (
     <td>
-      <i onClick={() => setFavored(!isFavored)} className={classes}></i>
+      <i onClick={onFavored} className={classes}></i>
     </td>
   );
 }

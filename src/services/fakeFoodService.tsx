@@ -6,6 +6,7 @@ interface Food {
   category: Category;
   numberInStock: number;
   price: number;
+  isFavored?: boolean;
 }
 
 interface FoodFormData {

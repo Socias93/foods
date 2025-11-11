@@ -12,6 +12,16 @@ function App() {
     deleteFood(id);
   }
 
+  function handleFavor(id: string) {
+    const newFood = foods.map((food) => {
+      if (food._id === id) {
+        food.isFavored = !food.isFavored;
+      }
+      return food;
+    });
+    setFoods(newFood);
+  }
+
   return (
     <>
       <table className="table">
@@ -30,7 +40,10 @@ function App() {
               <td> {food.category.name} </td>
               <td> {food.price} </td>
               <td> {food.numberInStock} </td>
-              <Favorite />
+              <Favorite
+                isFavored={Boolean(food.isFavored)}
+                onFavored={() => handleFavor(food._id)}
+              />
               <td>
                 <button
                   onClick={() => handleDelete(food._id)}
