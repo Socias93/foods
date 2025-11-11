@@ -5,12 +5,15 @@ import Favorite from "./components/Favorite";
 import Pagination from "./components/Pagination";
 import { paginate } from "./components/utils";
 import ListGroup from "./components/ListGroup";
+import { Category, getCategories } from "./services/fakeCategoryService";
 
 const PAGE_SIZE = 4;
+const DEFAULT_CATEGORY = { _id: "", name: "All Categories" };
 
 function App() {
   const [foods, setFoods] = useState(getFoods());
   const [selectedPage, setSelectedPage] = useState(1);
+  const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY);
 
   function handleDelete(id: string) {
     const newFood = foods.filter((food) => food._id !== id);
@@ -34,13 +37,31 @@ function App() {
     setFoods(newFood);
   }
 
-  const paginatedFoods = paginate(foods, PAGE_SIZE, selectedPage);
+  function handleCategorySelect(category: Category) {
+    setSelectedCategory(category);
+    setSelectedPage(1);
+  }
+
+  const filtredFoods = selectedCategory._id
+    ? foods.filter((food) => food.category._id === selectedCategory._id)
+    : foods;
+
+  const paginatedFoods = paginate(filtredFoods, PAGE_SIZE, selectedPage);
+
+  if (foods.length === 0) return <p>There are 0 foods in the database</p>;
 
   return (
     <>
+      <p className="ms-3 mt-2">
+        There are {foods.length} foods in the database
+      </p>
       <div className="container row mt-3">
         <div className="col-3">
-          <ListGroup />
+          <ListGroup
+            items={[DEFAULT_CATEGORY, ...getCategories()]}
+            onCategorySelect={handleCategorySelect}
+            selectedCategory={selectedCategory}
+          />
         </div>
         <div className="col-8">
           <table className="table">
@@ -75,7 +96,7 @@ function App() {
             </tbody>
           </table>
           <Pagination
-            totalCount={foods.length}
+            totalCount={filtredFoods.length}
             pageSize={PAGE_SIZE}
             selectedPage={selectedPage}
             onPageSelect={setSelectedPage}

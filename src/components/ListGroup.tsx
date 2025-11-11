@@ -1,22 +1,22 @@
-import { useState } from "react";
-import { getCategories } from "../services/fakeCategoryService";
+import { Category } from "../services/fakeCategoryService";
 
-const DEFAULT_CATEGORY = { _id: "", name: "All Categories" };
+interface Props {
+  items: Category[];
+  selectedCategory: Category;
+  onCategorySelect(category: Category): void;
+}
 
-function ListGroup() {
-  const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY);
-  const categories = [DEFAULT_CATEGORY, ...getCategories()];
-
+function ListGroup({ items, onCategorySelect, selectedCategory }: Props) {
   return (
     <ul className="list-group list-group-flush">
-      {categories.map((category) => (
+      {items.map((item) => (
         <li
-          onClick={() => setSelectedCategory(category)}
-          key={category._id}
+          onClick={() => onCategorySelect(item)}
+          key={item._id}
           className={`clickable list-group-item rounded-3 ${
-            selectedCategory._id === category._id ? "active bg-black" : ""
+            selectedCategory._id === item._id ? "active bg-black" : ""
           }`}>
-          {category.name}
+          {item.name}
         </li>
       ))}
     </ul>
