@@ -1,3 +1,6 @@
+import { JSX } from "react";
+import { Food } from "../services/fakeFoodService";
+
 export function range(startNumber: number, endNumber: number): number[] {
   let pages: number[] = [];
 
@@ -15,3 +18,15 @@ export function paginate<T>(
 
   return items.slice(startNumber, endNumber);
 }
+
+export interface TextColumn {
+  path: string;
+  label: string;
+}
+
+export interface ContentColumn {
+  key: string;
+  content: (food: Food) => JSX.Element;
+}
+
+export type Columns = TextColumn | ContentColumn;

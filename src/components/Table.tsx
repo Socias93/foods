@@ -1,10 +1,6 @@
 import { Food } from "../services/fakeFoodService";
-import { TableBody, TableHeader } from "./types";
-
-export interface Columns {
-  path: string;
-  label: string;
-}
+import { Favorite, TableBody, TableHeader } from "./types";
+import { Columns } from "./utils";
 
 interface Props {
   foods: Food[];
@@ -30,12 +26,31 @@ function Table({ foods, onDelete, onFavor }: Props) {
       path: "numberInStock",
       label: "Stock",
     },
+    {
+      key: "favorite",
+      content: (food) => (
+        <Favorite
+          isFavored={Boolean(food.isFavored)}
+          onFavored={() => onFavor(food._id)}
+        />
+      ),
+    },
+    {
+      key: "delete",
+      content: (food) => (
+        <button
+          onClick={() => onDelete(food._id)}
+          className="btn btn-outline-danger">
+          Delete
+        </button>
+      ),
+    },
   ];
 
   return (
     <table className="table">
       <TableHeader columns={columns} />
-      <TableBody foods={foods} onDelete={onDelete} onFavor={onFavor} />
+      <TableBody foods={foods} columns={columns} />
     </table>
   );
 }

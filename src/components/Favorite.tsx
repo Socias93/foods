@@ -7,11 +7,7 @@ function Favorite({ isFavored, onFavored }: Props) {
   let classes = "clickable fa-star fa-";
   classes += isFavored ? "solid" : "regular";
 
-  return (
-    <td>
-      <i onClick={onFavored} className={classes}></i>
-    </td>
-  );
+  return <i onClick={onFavored} className={classes}></i>;
 }
 
 export default Favorite;

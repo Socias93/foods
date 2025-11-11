@@ -1,32 +1,24 @@
+import _ from "lodash";
 import { Food } from "../services/fakeFoodService";
-import { Favorite } from "./types";
+import { Columns } from "./utils";
 
 interface Props {
   foods: Food[];
-  onFavor(id: string): void;
-  onDelete(id: string): void;
+  columns: Columns[];
 }
 
-function TableBody({ foods, onDelete, onFavor }: Props) {
+function TableBody({ foods, columns }: Props) {
   return (
     <tbody className="table-group-divider">
       {foods.map((food) => (
         <tr key={food._id}>
-          <td> {food.name} </td>
-          <td> {food.category.name} </td>
-          <td> {food.price} </td>
-          <td> {food.numberInStock} </td>
-          <Favorite
-            isFavored={Boolean(food.isFavored)}
-            onFavored={() => onFavor(food._id)}
-          />
-          <td>
-            <button
-              onClick={() => onDelete(food._id)}
-              className="btn btn-outline-danger">
-              Delete
-            </button>
-          </td>
+          {columns.map((column) =>
+            "path" in column ? (
+              <td key={column.path}> {_.get(food, column.path)} </td>
+            ) : (
+              <td key={column.key}> {column.content(food)} </td>
+            )
+          )}
         </tr>
       ))}
     </tbody>
