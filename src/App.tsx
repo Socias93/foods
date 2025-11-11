@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import { deleteFood, getFoods } from "./services/fakeFoodService";
+import Favorite from "./components/Favorite";
 
 function App() {
   const [foods, setFoods] = useState(getFoods());
@@ -29,6 +30,7 @@ function App() {
               <td> {food.category.name} </td>
               <td> {food.price} </td>
               <td> {food.numberInStock} </td>
+              <Favorite />
               <td>
                 <button
                   onClick={() => handleDelete(food._id)}
