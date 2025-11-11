@@ -23,7 +23,7 @@ function Pagination({
     <nav aria-label="...">
       <ul className="pagination pagination-sm">
         {pages.map((page) => (
-          <li className="page-item m-1">
+          <li key={page} className="page-item m-1">
             <a
               onClick={() => onPageSelect(page)}
               className={`bg-dark text-white clickable page-link rounded-2 ${
