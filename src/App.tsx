@@ -4,6 +4,7 @@ import { deleteFood, getFoods } from "./services/fakeFoodService";
 import Favorite from "./components/Favorite";
 import Pagination from "./components/Pagination";
 import { paginate } from "./components/utils";
+import ListGroup from "./components/ListGroup";
 
 const PAGE_SIZE = 4;
 
@@ -37,44 +38,49 @@ function App() {
 
   return (
     <>
-      <div className="container">
-        <table className="table">
-          <thead>
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col">Category</th>
-              <th scope="col">Price</th>
-              <th scope="col">Stock</th>
-            </tr>
-          </thead>
-          <tbody className="table-group-divider">
-            {paginatedFoods.map((food) => (
-              <tr key={food._id}>
-                <td> {food.name} </td>
-                <td> {food.category.name} </td>
-                <td> {food.price} </td>
-                <td> {food.numberInStock} </td>
-                <Favorite
-                  isFavored={Boolean(food.isFavored)}
-                  onFavored={() => handleFavor(food._id)}
-                />
-                <td>
-                  <button
-                    onClick={() => handleDelete(food._id)}
-                    className="btn btn-outline-danger">
-                    Delete
-                  </button>
-                </td>
+      <div className="container row mt-3">
+        <div className="col-3">
+          <ListGroup />
+        </div>
+        <div className="col-8">
+          <table className="table">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Category</th>
+                <th scope="col">Price</th>
+                <th scope="col">Stock</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-        <Pagination
-          totalCount={foods.length}
-          pageSize={PAGE_SIZE}
-          selectedPage={selectedPage}
-          onPageSelect={setSelectedPage}
-        />
+            </thead>
+            <tbody className="table-group-divider">
+              {paginatedFoods.map((food) => (
+                <tr key={food._id}>
+                  <td> {food.name} </td>
+                  <td> {food.category.name} </td>
+                  <td> {food.price} </td>
+                  <td> {food.numberInStock} </td>
+                  <Favorite
+                    isFavored={Boolean(food.isFavored)}
+                    onFavored={() => handleFavor(food._id)}
+                  />
+                  <td>
+                    <button
+                      onClick={() => handleDelete(food._id)}
+                      className="btn btn-outline-danger">
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <Pagination
+            totalCount={foods.length}
+            pageSize={PAGE_SIZE}
+            selectedPage={selectedPage}
+            onPageSelect={setSelectedPage}
+          />
+        </div>
       </div>
     </>
   );
