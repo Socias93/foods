@@ -6,6 +6,7 @@ import {
   LoginPage,
   OrdersPage,
   RegisterPage,
+  FoodFormPage,
 } from "../pages/types";
 
 const router = createBrowserRouter([
@@ -17,6 +18,14 @@ const router = createBrowserRouter([
       {
         path: "foods",
         element: <FoodsPage />,
+      },
+      {
+        path: "foods/:id",
+        element: <FoodFormPage />,
+      },
+      {
+        path: "new",
+        element: <FoodFormPage />,
       },
       {
         path: "orders",

@@ -3,6 +3,7 @@ import { deleteFood, getFoods } from "../services/fakeFoodService";
 import { paginate } from "../components/utils";
 import { Category, getCategories } from "../services/fakeCategoryService";
 import { ListGroup, Pagination, Table } from "../components/types";
+import { NavLink } from "react-router-dom";
 
 const PAGE_SIZE = 4;
 const DEFAULT_CATEGORY = { _id: "", name: "All Categories" };
@@ -49,9 +50,6 @@ function FoodsPage() {
 
   return (
     <>
-      <p className="ms-3 mt-2">
-        There are {foods.length} foods in the database
-      </p>
       <div className="container row mt-3">
         <div className="col-3">
           <ListGroup
@@ -61,6 +59,10 @@ function FoodsPage() {
           />
         </div>
         <div className="col-8">
+          <p>There are {foods.length} foods in the database</p>
+          <NavLink to={"/new"} className="btn btn-outline-dark">
+            New Food
+          </NavLink>
           <Table
             foods={paginatedFoods}
             onDelete={handleDelete}
