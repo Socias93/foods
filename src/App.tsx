@@ -1,11 +1,12 @@
 import { useState } from "react";
-import "./App.css";
 import { deleteFood, getFoods } from "./services/fakeFoodService";
-import Favorite from "./components/Favorite";
 import Pagination from "./components/Pagination";
 import { paginate } from "./components/utils";
 import ListGroup from "./components/ListGroup";
 import { Category, getCategories } from "./services/fakeCategoryService";
+import "./App.css";
+import TableHeader from "./components/TableHeader";
+import TableBody from "./components/TableBody";
 
 const PAGE_SIZE = 4;
 const DEFAULT_CATEGORY = { _id: "", name: "All Categories" };
@@ -65,35 +66,12 @@ function App() {
         </div>
         <div className="col-8">
           <table className="table">
-            <thead>
-              <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Category</th>
-                <th scope="col">Price</th>
-                <th scope="col">Stock</th>
-              </tr>
-            </thead>
-            <tbody className="table-group-divider">
-              {paginatedFoods.map((food) => (
-                <tr key={food._id}>
-                  <td> {food.name} </td>
-                  <td> {food.category.name} </td>
-                  <td> {food.price} </td>
-                  <td> {food.numberInStock} </td>
-                  <Favorite
-                    isFavored={Boolean(food.isFavored)}
-                    onFavored={() => handleFavor(food._id)}
-                  />
-                  <td>
-                    <button
-                      onClick={() => handleDelete(food._id)}
-                      className="btn btn-outline-danger">
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
+            <TableHeader />
+            <TableBody
+              foods={paginatedFoods}
+              onDelete={handleDelete}
+              onFavor={handleFavor}
+            />
           </table>
           <Pagination
             totalCount={filtredFoods.length}
