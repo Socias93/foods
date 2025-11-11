@@ -2,12 +2,7 @@ import { useState } from "react";
 import { deleteFood, getFoods } from "../services/fakeFoodService";
 import { paginate } from "../components/utils";
 import { Category, getCategories } from "../services/fakeCategoryService";
-import {
-  ListGroup,
-  Pagination,
-  TableBody,
-  TableHeader,
-} from "../components/types";
+import { ListGroup, Pagination, Table } from "../components/types";
 
 const PAGE_SIZE = 4;
 const DEFAULT_CATEGORY = { _id: "", name: "All Categories" };
@@ -66,14 +61,11 @@ function FoodsPage() {
           />
         </div>
         <div className="col-8">
-          <table className="table">
-            <TableHeader />
-            <TableBody
-              foods={paginatedFoods}
-              onDelete={handleDelete}
-              onFavor={handleFavor}
-            />
-          </table>
+          <Table
+            foods={paginatedFoods}
+            onDelete={handleDelete}
+            onFavor={handleFavor}
+          />
           <Pagination
             totalCount={filtredFoods.length}
             pageSize={PAGE_SIZE}
