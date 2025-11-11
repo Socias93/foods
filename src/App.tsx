@@ -3,14 +3,24 @@ import "./App.css";
 import { deleteFood, getFoods } from "./services/fakeFoodService";
 import Favorite from "./components/Favorite";
 import Pagination from "./components/Pagination";
+import { paginate } from "./components/utils";
+
+const PAGE_SIZE = 4;
 
 function App() {
   const [foods, setFoods] = useState(getFoods());
+  const [selectedPage, setSelectedPage] = useState(1);
 
   function handleDelete(id: string) {
     const newFood = foods.filter((food) => food._id !== id);
     setFoods(newFood);
     deleteFood(id);
+
+    const newPageCount = Math.max(1, Math.ceil(newFood.length / PAGE_SIZE));
+
+    if (selectedPage > newPageCount) {
+      setSelectedPage(newPageCount);
+    }
   }
 
   function handleFavor(id: string) {
@@ -22,6 +32,8 @@ function App() {
     });
     setFoods(newFood);
   }
+
+  const paginatedFoods = paginate(foods, PAGE_SIZE, selectedPage);
 
   return (
     <>
@@ -36,7 +48,7 @@ function App() {
             </tr>
           </thead>
           <tbody className="table-group-divider">
-            {foods.map((food) => (
+            {paginatedFoods.map((food) => (
               <tr key={food._id}>
                 <td> {food.name} </td>
                 <td> {food.category.name} </td>
@@ -57,7 +69,12 @@ function App() {
             ))}
           </tbody>
         </table>
-        <Pagination />
+        <Pagination
+          totalCount={foods.length}
+          pageSize={PAGE_SIZE}
+          selectedPage={selectedPage}
+          onPageSelect={setSelectedPage}
+        />
       </div>
     </>
   );

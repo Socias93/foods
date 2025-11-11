@@ -1,13 +1,23 @@
-import { useState } from "react";
+import { range } from "./utils";
 
-function Pagination() {
-  const [selectedPage, setSelectedPage] = useState(1);
-  const pageSize = 4;
-  const totalCount = 9;
+interface Props {
+  pageSize: number;
+  totalCount: number;
+  selectedPage: number;
+  onPageSelect(page: number): void;
+}
 
+function Pagination({
+  onPageSelect,
+  pageSize,
+  selectedPage,
+  totalCount,
+}: Props) {
   const pageCount = Math.ceil(totalCount / pageSize);
 
   let pages = range(1, pageCount);
+
+  if (pageCount === 1) return null;
 
   return (
     <nav aria-label="...">
@@ -15,7 +25,7 @@ function Pagination() {
         {pages.map((page) => (
           <li className="page-item m-1">
             <a
-              onClick={() => setSelectedPage(page)}
+              onClick={() => onPageSelect(page)}
               className={`bg-dark text-white clickable page-link rounded-2 ${
                 page === selectedPage ? "active bg-black" : "bg-grey"
               }`}
@@ -27,13 +37,6 @@ function Pagination() {
       </ul>
     </nav>
   );
-}
-
-export function range(startNumber: number, endNumber: number): number[] {
-  let pages: number[] = [];
-
-  for (let count = startNumber; count <= endNumber; count++) pages.push(count);
-  return pages;
 }
 
 export default Pagination;
