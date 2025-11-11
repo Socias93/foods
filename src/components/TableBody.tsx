@@ -1,5 +1,5 @@
 import { Food } from "../services/fakeFoodService";
-import Favorite from "./Favorite";
+import { Favorite } from "./types";
 
 interface Props {
   foods: Food[];

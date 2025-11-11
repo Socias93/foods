@@ -1,12 +1,14 @@
+import "./App.css";
 import { useState } from "react";
 import { deleteFood, getFoods } from "./services/fakeFoodService";
-import Pagination from "./components/Pagination";
 import { paginate } from "./components/utils";
-import ListGroup from "./components/ListGroup";
 import { Category, getCategories } from "./services/fakeCategoryService";
-import "./App.css";
-import TableHeader from "./components/TableHeader";
-import TableBody from "./components/TableBody";
+import {
+  ListGroup,
+  Pagination,
+  TableBody,
+  TableHeader,
+} from "./components/types";
 
 const PAGE_SIZE = 4;
 const DEFAULT_CATEGORY = { _id: "", name: "All Categories" };
