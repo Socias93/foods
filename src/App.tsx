@@ -1,8 +1,14 @@
+import { Outlet } from "react-router-dom";
 import "./App.css";
-import FoodsPage from "./pages/FoodsPage";
+import Navbar from "./components/Navbar";
 
 function App() {
-  return <FoodsPage />;
+  return (
+    <>
+      <Navbar />
+      <Outlet />
+    </>
+  );
 }
 
 export default App;
