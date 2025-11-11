@@ -1,8 +1,16 @@
+import { useState } from "react";
 import "./App.css";
-import { getFoods } from "./services/fakeFoodService";
+import { deleteFood, getFoods } from "./services/fakeFoodService";
 
 function App() {
-  const foods = getFoods();
+  const [foods, setFoods] = useState(getFoods());
+
+  function handleDelete(id: string) {
+    const newFood = foods.filter((food) => food._id !== id);
+    setFoods(newFood);
+    deleteFood(id);
+  }
+
   return (
     <>
       <table className="table">
@@ -21,6 +29,13 @@ function App() {
               <td> {food.category.name} </td>
               <td> {food.price} </td>
               <td> {food.numberInStock} </td>
+              <td>
+                <button
+                  onClick={() => handleDelete(food._id)}
+                  className="btn btn-outline-danger">
+                  Delete
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
