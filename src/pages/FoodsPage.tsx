@@ -4,6 +4,7 @@ import { paginate } from "../components/utils";
 import { Category, getCategories } from "../services/fakeCategoryService";
 import { ListGroup, Pagination, Table } from "../components/types";
 import { NavLink } from "react-router-dom";
+import SearchBox from "../components/SearchBox";
 
 const PAGE_SIZE = 4;
 const DEFAULT_CATEGORY = { _id: "", name: "All Categories" };
@@ -63,6 +64,7 @@ function FoodsPage() {
           <NavLink to={"/new"} className="btn btn-outline-dark">
             New Food
           </NavLink>
+          <SearchBox />
           <Table
             foods={paginatedFoods}
             onDelete={handleDelete}
