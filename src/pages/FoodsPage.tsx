@@ -13,6 +13,7 @@ function FoodsPage() {
   const [foods, setFoods] = useState(getFoods());
   const [selectedPage, setSelectedPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY);
+  const [searchQuery, setSearchQuery] = useState("");
 
   function handleDelete(id: string) {
     const newFood = foods.filter((food) => food._id !== id);
@@ -41,9 +42,23 @@ function FoodsPage() {
     setSelectedPage(1);
   }
 
-  const filtredFoods = selectedCategory._id
-    ? foods.filter((food) => food.category._id === selectedCategory._id)
-    : foods;
+  let filtredFoods = foods;
+
+  const query = searchQuery.toLowerCase();
+  const numberQuery = searchQuery.toString();
+
+  if (searchQuery)
+    filtredFoods = foods.filter(
+      (food) =>
+        food.name.toLowerCase().includes(query) ||
+        food.category.name.toLowerCase().includes(query) ||
+        food.price.toString().includes(numberQuery) ||
+        food.numberInStock.toString().includes(numberQuery)
+    );
+  if (selectedCategory._id)
+    filtredFoods = foods.filter(
+      (food) => food.category._id === selectedCategory._id
+    );
 
   const paginatedFoods = paginate(filtredFoods, PAGE_SIZE, selectedPage);
 
@@ -64,7 +79,7 @@ function FoodsPage() {
           <NavLink to={"/new"} className="btn btn-outline-dark">
             New Food
           </NavLink>
-          <SearchBox />
+          <SearchBox value={searchQuery} onChange={setSearchQuery} />
           <Table
             foods={paginatedFoods}
             onDelete={handleDelete}
