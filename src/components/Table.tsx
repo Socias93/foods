@@ -2,14 +2,17 @@ import { Link } from "react-router-dom";
 import { Food } from "../services/fakeFoodService";
 import { Favorite, TableBody, TableHeader } from "./types";
 import { Columns } from "./utils";
+import { SortColumn } from "../pages/FoodsPage";
 
 interface Props {
   foods: Food[];
   onFavor(id: string): void;
   onDelete(id: string): void;
+  sortColumn: SortColumn;
+  setSortColumn(sortColumn: SortColumn): void;
 }
 
-function Table({ foods, onDelete, onFavor }: Props) {
+function Table({ foods, onDelete, onFavor, setSortColumn, sortColumn }: Props) {
   const columns: Columns[] = [
     {
       content: (food) => (
@@ -55,7 +58,11 @@ function Table({ foods, onDelete, onFavor }: Props) {
 
   return (
     <table className="table">
-      <TableHeader columns={columns} />
+      <TableHeader
+        columns={columns}
+        setSortColumn={setSortColumn}
+        sortColumn={sortColumn}
+      />
       <TableBody foods={foods} columns={columns} />
     </table>
   );

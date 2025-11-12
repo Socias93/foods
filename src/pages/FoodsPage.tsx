@@ -2,18 +2,25 @@ import { useState } from "react";
 import { deleteFood, getFoods } from "../services/fakeFoodService";
 import { paginate } from "../components/utils";
 import { Category, getCategories } from "../services/fakeCategoryService";
-import { ListGroup, Pagination, Table } from "../components/types";
+import { ListGroup, Pagination, Table, SearchBox } from "../components/types";
 import { NavLink } from "react-router-dom";
-import SearchBox from "../components/SearchBox";
+import _ from "lodash";
+
+export interface SortColumn {
+  path: string;
+  order: "asc" | "desc";
+}
 
 const PAGE_SIZE = 4;
 const DEFAULT_CATEGORY = { _id: "", name: "All Categories" };
+const SORT_ITEM: SortColumn = { path: "name", order: "asc" };
 
 function FoodsPage() {
   const [foods, setFoods] = useState(getFoods());
   const [selectedPage, setSelectedPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY);
   const [searchQuery, setSearchQuery] = useState("");
+  const [sortColumn, setSortColumn] = useState(SORT_ITEM);
 
   function handleDelete(id: string) {
     const newFood = foods.filter((food) => food._id !== id);
@@ -60,7 +67,13 @@ function FoodsPage() {
       (food) => food.category._id === selectedCategory._id
     );
 
-  const paginatedFoods = paginate(filtredFoods, PAGE_SIZE, selectedPage);
+  const sortedFoods = _.orderBy(
+    filtredFoods,
+    sortColumn.path,
+    sortColumn.order
+  );
+
+  const paginatedFoods = paginate(sortedFoods, PAGE_SIZE, selectedPage);
 
   if (foods.length === 0) return <p>There are 0 foods in the database</p>;
 
@@ -81,6 +94,8 @@ function FoodsPage() {
           </NavLink>
           <SearchBox value={searchQuery} onChange={setSearchQuery} />
           <Table
+            setSortColumn={setSortColumn}
+            sortColumn={sortColumn}
             foods={paginatedFoods}
             onDelete={handleDelete}
             onFavor={handleFavor}
