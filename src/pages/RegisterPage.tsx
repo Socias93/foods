@@ -18,13 +18,12 @@ function RegisterPage() {
 
   return (
     <>
-      {" "}
       <div className="vh-100 d-grid justify-content-center align-content-center">
         <h2 className="mb-4 text-center">Login</h2>
         <div className="p-3 shadow rounded-4" style={{ width: 400 }}>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-2">
-              <label className="form-label">Password</label>
+              <label className="form-label">Name</label>
               <input
                 {...register("name")}
                 type="text"

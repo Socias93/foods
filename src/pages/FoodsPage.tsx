@@ -47,6 +47,13 @@ function FoodsPage() {
   function handleCategorySelect(category: Category) {
     setSelectedCategory(category);
     setSelectedPage(1);
+    setSearchQuery("");
+  }
+
+  function handleSearch(value: string) {
+    setSearchQuery(value);
+    setSelectedCategory(DEFAULT_CATEGORY);
+    setSortColumn(SORT_ITEM);
   }
 
   let filtredFoods = foods;
@@ -92,7 +99,7 @@ function FoodsPage() {
           <NavLink to={"/new"} className="btn btn-outline-dark">
             New Food
           </NavLink>
-          <SearchBox value={searchQuery} onChange={setSearchQuery} />
+          <SearchBox value={searchQuery} onChange={handleSearch} />
           <Table
             setSortColumn={setSortColumn}
             sortColumn={sortColumn}

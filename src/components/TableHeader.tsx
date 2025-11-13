@@ -9,7 +9,7 @@ interface Props {
 
 function TableHeader({ columns, sortColumn, setSortColumn }: Props) {
   function handleSort(path: string) {
-    if (sortColumn.path == path) {
+    if (sortColumn.path === path) {
       sortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
     } else {
       sortColumn.path = path;
