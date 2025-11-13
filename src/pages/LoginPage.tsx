@@ -1,5 +1,56 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { FormData, schema } from "./schemas/LoginSchema";
+
 function LoginPage() {
-  return <h1>LoginPage</h1>;
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({ resolver: zodResolver(schema) });
+
+  function onSubmit(data: FormData) {
+    console.log("Submitted", data);
+    navigate("/");
+  }
+  return (
+    <>
+      <div className="vh-100 d-grid justify-content-center align-content-center">
+        <h2 className="mb-4 text-center">Login</h2>
+        <div className="p-3 shadow rounded-4" style={{ width: 400 }}>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="mb-2">
+              <label className="form-label">Email</label>
+              <input
+                {...register("email")}
+                type="email"
+                className="form-control"
+              />
+              {errors.email && (
+                <p className="text-danger"> {errors.email.message} </p>
+              )}
+            </div>
+            <div className="mb-2">
+              <label className="form-label">Password</label>
+              <input
+                {...register("password")}
+                type="text"
+                className="form-control"
+              />
+              {errors.password && (
+                <p className="text-danger"> {errors.password.message} </p>
+              )}
+            </div>
+            <div className="text-center">
+              <button className="btn btn-outline-dark m-2 w-50">Save</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </>
+  );
 }
 
 export default LoginPage;
