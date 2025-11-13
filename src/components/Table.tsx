@@ -15,6 +15,17 @@ interface Props {
 function Table({ foods, onDelete, onFavor, setSortColumn, sortColumn }: Props) {
   const columns: Columns[] = [
     {
+      key: "image",
+      content: (food: Food) => (
+        <img
+          className="img-fluid"
+          style={{ width: 60, height: "auto" }}
+          src={food.image}
+          alt={food.name}
+        />
+      ),
+    },
+    {
       content: (food) => (
         <Link style={{ color: "black" }} to={`/foods/${food._id}`}>
           {food.name}{" "}
@@ -35,6 +46,7 @@ function Table({ foods, onDelete, onFavor, setSortColumn, sortColumn }: Props) {
       path: "numberInStock",
       label: "Stock",
     },
+
     {
       key: "favorite",
       content: (food) => (
