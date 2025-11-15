@@ -13,7 +13,7 @@ export const schema = z.object({
   numberInStock: z
     .number({ error: "You must write a number" })
     .min(1, { message: "Stock cant be less than 1" })
-    .max(20, { message: "Stock cant be more than 100" }),
+    .max(100, { message: "Stock cant be more than 100" }),
 });
 
 export type FormData = z.infer<typeof schema>;

@@ -7,9 +7,11 @@ import {
   OrdersPage,
   RegisterPage,
   FoodFormPage,
+  NotFoundPage,
 } from "../pages/types";
 
 const router = createBrowserRouter([
+  { path: "*", element: <NotFoundPage /> },
   {
     path: "/",
     element: <App />,

@@ -16,19 +16,20 @@ function FoodFormPage() {
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema), mode: "onChange" });
 
-  function onSubmit(data: FormData) {
-    console.log("Submitted", data);
-    saveFood(data);
-    navigate("/");
-  }
-
   useEffect(() => {
     if (!id || id === "new") return;
     const food = getFood(id);
 
     if (!food) return;
+
     reset(mapToFormData(food));
   }, []);
+
+  function onSubmit(data: FormData) {
+    console.log("Submitted", data);
+    saveFood(data);
+    navigate("/");
+  }
 
   function mapToFormData(food: Food) {
     return {
@@ -59,7 +60,7 @@ function FoodFormPage() {
                 <p className="text-danger">{errors.name.message} </p>
               )}
             </div>
-            <div className="mb-2 mt-4">
+            <div className="mb-2 mt-5">
               <select
                 {...register("categoryId")}
                 id="disabledSelect"
@@ -97,6 +98,7 @@ function FoodFormPage() {
                 <p className="text-danger">{errors.numberInStock.message} </p>
               )}
             </div>
+
             <div className="text-center">
               <button className="btn btn-outline-dark w-50 m-2">Save</button>
             </div>
