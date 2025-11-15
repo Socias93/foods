@@ -1,13 +1,14 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
-import { getCategories } from "../services/fakeCategoryService";
 import { Food, getFood, saveFood } from "../services/fakeFoodService";
 import { FormData, schema } from "./schemas/FoodFormSchema";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Category } from "../services/utils";
+import { getCategories } from "../services/fakeCategoryService";
 
 function FoodFormPage() {
-  const categories = getCategories();
+  const [categories, setCategories] = useState<Category[]>([]);
   const navigate = useNavigate();
   const {
     reset,
@@ -17,12 +18,17 @@ function FoodFormPage() {
   } = useForm<FormData>({ resolver: zodResolver(schema), mode: "onChange" });
 
   useEffect(() => {
-    if (!id || id === "new") return;
-    const food = getFood(id);
+    async function fetch() {
+      const { data: categories } = await getCategories();
+      setCategories(categories);
 
-    if (!food) return;
+      if (!id || id === "new") return;
+      const { data: food } = await getFood(id);
 
-    reset(mapToFormData(food));
+      if (!food) return;
+      reset(mapToFormData(food));
+    }
+    fetch();
   }, []);
 
   function onSubmit(data: FormData) {
@@ -33,9 +39,9 @@ function FoodFormPage() {
 
   function mapToFormData(food: Food) {
     return {
-      _id: food._id,
+      id: food.id,
       name: food.name,
-      categoryId: food.category._id,
+      categoryId: food.category.id,
       price: food.price,
       numberInStock: food.numberInStock,
     };
@@ -67,7 +73,7 @@ function FoodFormPage() {
                 className="form-select">
                 <option value={""}>Categories</option>
                 {categories.map((category) => (
-                  <option key={category._id} value={category._id}>
+                  <option key={category.id} value={category.id}>
                     {category.name}
                   </option>
                 ))}

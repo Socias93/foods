@@ -11,10 +11,10 @@ function TableBody({ foods, columns }: Props) {
   return (
     <tbody className="table-group-divider">
       {foods.map((food) => (
-        <tr key={food._id}>
+        <tr key={food.id}>
           {columns.map((column) =>
             "content" in column ? (
-              <td key={`${food._id}-${column.key}`}>{column.content(food)}</td>
+              <td key={`${food.id}-${column.key}`}>{column.content(food)}</td>
             ) : (
               <td key={column.path}> {_.get(food, column.path)} </td>
             )

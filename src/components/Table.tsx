@@ -27,7 +27,7 @@ function Table({ foods, onDelete, onFavor, setSortColumn, sortColumn }: Props) {
     },
     {
       content: (food) => (
-        <Link style={{ color: "black" }} to={`/foods/${food._id}`}>
+        <Link style={{ color: "black" }} to={`/foods/${food.id}`}>
           {food.name}{" "}
         </Link>
       ),
@@ -52,7 +52,7 @@ function Table({ foods, onDelete, onFavor, setSortColumn, sortColumn }: Props) {
       content: (food) => (
         <Favorite
           isFavored={Boolean(food.isFavored)}
-          onFavored={() => onFavor(food._id)}
+          onFavored={() => onFavor(food.id)}
         />
       ),
     },
@@ -60,7 +60,7 @@ function Table({ foods, onDelete, onFavor, setSortColumn, sortColumn }: Props) {
       key: "delete",
       content: (food) => (
         <button
-          onClick={() => onDelete(food._id)}
+          onClick={() => onDelete(food.id)}
           className="btn btn-outline-danger">
           Delete
         </button>

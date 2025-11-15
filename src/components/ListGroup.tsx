@@ -1,4 +1,4 @@
-import { Category } from "../services/fakeCategoryService";
+import { Category } from "../services/utils";
 
 interface Props {
   items: Category[];
@@ -12,9 +12,9 @@ function ListGroup({ items, onCategorySelect, selectedCategory }: Props) {
       {items.map((item) => (
         <li
           onClick={() => onCategorySelect(item)}
-          key={item._id}
+          key={item.id}
           className={`clickable list-group-item rounded-3 ${
-            selectedCategory._id === item._id ? "active bg-black" : ""
+            selectedCategory.id === item.id ? "active bg-black" : ""
           }`}>
           {item.name}
         </li>

@@ -1,10 +1,11 @@
-import { useState } from "react";
-import { deleteFood, getFoods } from "../services/fakeFoodService";
+import { useEffect, useState } from "react";
+import { deleteFood, Food, getFoods } from "../services/fakeFoodService";
 import { paginate } from "../components/utils";
-import { Category, getCategories } from "../services/fakeCategoryService";
 import { ListGroup, Pagination, Table, SearchBox } from "../components/types";
 import { NavLink } from "react-router-dom";
 import _ from "lodash";
+import { Category } from "../services/utils";
+import { getCategories } from "../services/fakeCategoryService";
 
 export interface SortColumn {
   path: string;
@@ -12,18 +13,19 @@ export interface SortColumn {
 }
 
 const PAGE_SIZE = 4;
-const DEFAULT_CATEGORY = { _id: "", name: "All Categories" };
+const DEFAULT_CATEGORY = { id: "", name: "All Categories" };
 const SORT_ITEM: SortColumn = { path: "name", order: "asc" };
 
 function FoodsPage() {
-  const [foods, setFoods] = useState(getFoods());
+  const [foods, setFoods] = useState<Food[]>([]);
   const [selectedPage, setSelectedPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortColumn, setSortColumn] = useState(SORT_ITEM);
+  const [categories, setCategories] = useState<Category[]>([]);
 
   function handleDelete(id: string) {
-    const newFood = foods.filter((food) => food._id !== id);
+    const newFood = foods.filter((food) => food.id !== id);
     setFoods(newFood);
     deleteFood(id);
 
@@ -36,7 +38,7 @@ function FoodsPage() {
 
   function handleFavor(id: string) {
     const newFood = foods.map((food) => {
-      if (food._id === id) {
+      if (food.id === id) {
         food.isFavored = !food.isFavored;
       }
       return food;
@@ -56,6 +58,17 @@ function FoodsPage() {
     setSortColumn(SORT_ITEM);
   }
 
+  useEffect(() => {
+    async function fetch() {
+      const { data: categories } = await getCategories();
+
+      setCategories(categories);
+      const { data: foods } = await getFoods();
+      setFoods(foods);
+    }
+    fetch();
+  }, []);
+
   let filtredFoods = foods;
 
   const query = searchQuery.toLowerCase();
@@ -69,9 +82,9 @@ function FoodsPage() {
         food.price.toString().includes(numberQuery) ||
         food.numberInStock.toString().includes(numberQuery)
     );
-  if (selectedCategory._id)
+  if (selectedCategory.id)
     filtredFoods = foods.filter(
-      (food) => food.category._id === selectedCategory._id
+      (food) => food.category.id === selectedCategory.id
     );
 
   const sortedFoods = _.orderBy(
@@ -89,7 +102,7 @@ function FoodsPage() {
       <div className="container row mt-3">
         <div className="col-3">
           <ListGroup
-            items={[DEFAULT_CATEGORY, ...getCategories()]}
+            items={[DEFAULT_CATEGORY, ...categories]}
             onCategorySelect={handleCategorySelect}
             selectedCategory={selectedCategory}
           />
